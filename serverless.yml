@@ -1,15 +1,14 @@
-# "org" ensures this Service is used with the correct Serverless Framework Access Key.
 org: alakara
-# "service" is the name of this project. This will also be added to your AWS resource names.
+
 service: sms-game-suite
 
 provider:
   name: aws
-  runtime: python3.12 # Or python3.10, python3.11 - choose what you prefer/have installed
-  stage: dev         # Deployment stage (e.g., dev, prod)
-  region: eu-west-1  # AWS Region (choose one, eu-west-1 is good for Africa)
-  timeout: 30        # Increase timeout slightly if functions run longer
-  environment:       # Add your Africa's Talking credentials here
+  runtime: python3.12 
+  stage: dev         
+  region: eu-west-1  
+  timeout: 30        
+  environment:       
     AFRICASTALKING_USERNAME: sandbox
     AFRICASTALKING_API_KEY: atsk_63f6ab496244817dcacc27f53104e2a562c6c21144c159d2040999d227f0aed35629ee0a
   iam:
@@ -24,18 +23,18 @@ provider:
 
 functions:
   inboundSmsWebhook:
-    handler: handler.inbound_sms_handler # Python file 'handler.py', function 'inbound_sms_handler'
+    handler: handler.inbound_sms_handler # Python file 'handler.py', function 'inbound_sms_handler' - lambda entry point
     events:
       - http:
           path: sms-webhook # The URL path for our webhook
-          method: post      # Africa's Talking sends POST requests
-          cors: true        # Enable CORS (not strictly needed for AT, but harmless)
+          method: post      
+          cors: true        
 
 plugins:
-  - serverless-python-requirements # For handling Python dependencies
+  - serverless-python-requirements 
 
 custom:
-  usersTableName: ${self:service}-${sls:stage}-users # NEW: Define the table name here
+  usersTableName: ${self:service}-${sls:stage}-users
 
 resources:
   Resources:
